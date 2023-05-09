@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: d5ffff;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trains.controller.ResultController">
+   <children>
+      <TableView fx:id="trainTableView" layoutX="292.0" layoutY="149.0" prefHeight="222.0" prefWidth="462.0">
+        <columns>
+          <TableColumn fx:id="trainNumberColumn" prefWidth="75.0" text="№ потяга" />
+          <TableColumn fx:id="fromColumn" prefWidth="75.0" text="Прямує з" />
+            <TableColumn fx:id="toColumn" prefWidth="75.0" text="Прямує до" />
+            <TableColumn fx:id="trainClassColumn" prefWidth="75.0" text="Клас" />
+            <TableColumn fx:id="departColumn" prefWidth="86.0" text="Відправлення" />
+            <TableColumn fx:id="arriveColumn" prefWidth="75.0" text="Прибуття" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

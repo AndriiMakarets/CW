@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="trains.controller.MainController">
+   <children>
+      <ImageView fitHeight="630.0" fitWidth="975.0" layoutX="-70.0" layoutY="-30.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../thumb-item-523x340-2f78.jpg" />
+         </image>
+      </ImageView>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#718fab00" height="600.0" layoutX="-2.0" stroke="#37540c" strokeType="INSIDE" strokeWidth="10.0" width="909.0" />
+      <Label layoutX="309.0" layoutY="14.0" text="Рекомендатор сполучень">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Button fx:id="recommendButton" layoutX="400.0" layoutY="541.0" mnemonicParsing="false" style="-fx-background-color: d5ffff;" text="Рекомендувати" />
+      <TextField fx:id="departeField" layoutX="160.0" layoutY="104.0" />
+      <TextField fx:id="arriveField" layoutX="625.0" layoutY="104.0" />
+      <Text layoutX="175.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Станція відправлення" />
+      <Text layoutX="652.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Станція прибуття" />
+      <TextField fx:id="priceField" layoutX="161.0" layoutY="235.0" prefHeight="25.0" prefWidth="149.0" />
+      <TextField fx:id="departTimeField" layoutX="393.0" layoutY="235.0" />
+      <TextField fx:id="travelTimeField" layoutX="625.0" layoutY="235.0" />
+      <Text layoutX="222.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ціна" />
+      <Text layoutX="419.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Час відправлення" />
+      <Text layoutX="665.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Час в дорозі" />
+      <TextField fx:id="wagonTypeField" layoutX="269.0" layoutY="360.0" />
+      <Text layoutX="311.0" layoutY="356.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Клас вагона" />
+      <TextField fx:id="trainClassField" layoutX="517.0" layoutY="360.0" />
+      <Text layoutX="562.0" layoutY="356.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Тип потяга" />
+   </children>
+</AnchorPane>
