@@ -8,12 +8,14 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import trains.DatabaseHandler;
+import trains.model.TimeChange;
 import trains.model.Train;
 import trains.model.TrainTime;
 import trains.service.TimeToString;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.OffsetDateTime;
 import java.util.ResourceBundle;
 
 
@@ -34,6 +36,8 @@ public class ResultController implements Initializable {
     private TableColumn<TrainTime, String> departColumn;
     @FXML
     private TableColumn<TrainTime, String> arriveColumn;
+    @FXML
+    private TableColumn<TrainTime, String> durationColumn;
 
     DatabaseHandler db = new DatabaseHandler();
 
@@ -47,6 +51,7 @@ public class ResultController implements Initializable {
         trainClassColumn.setCellValueFactory(new PropertyValueFactory<TrainTime, String>("trainClass"));
         departColumn.setCellValueFactory(new PropertyValueFactory<TrainTime, String>("departureTime"));
         arriveColumn.setCellValueFactory(new PropertyValueFactory<TrainTime, String>("arriveTime"));
+        durationColumn.setCellValueFactory(new PropertyValueFactory<TrainTime, String>("duration"));
 
         //додаємо час відправлення до потягів
         ObservableList<Train> trains = MainController.trains;
@@ -55,10 +60,16 @@ public class ResultController implements Initializable {
             Train currentTrain = trains.get(i);
             System.out.println(currentTrain);
             try {
-            String depart = TimeToString.toString( db.getDepartByTrain(currentTrain, MainController.from).getTime());
-            String arrive = TimeToString.toString( db.getArriveByTrain(currentTrain, MainController.to).getTime());
-                trainTimes.add(new TrainTime( depart, arrive, currentTrain.getId(), currentTrain.numberProperty(),
-                        currentTrain.fromProperty(), currentTrain.toProperty(), currentTrain.trainClassProperty()));
+                //час+чи була зміна доби
+            TimeChange d = db.getDepartByTrain(currentTrain, MainController.from);
+            TimeChange a = db.getArriveByTrain(currentTrain, MainController.to);
+            //час відправлення/прибуття
+            OffsetDateTime depart = d .getTime();
+            OffsetDateTime arrive = a .getTime();
+            String duration = TimeToString.timeDiff(depart, arrive);
+                trainTimes.add(new TrainTime(TimeToString.toString(depart), TimeToString.toString(arrive), duration,
+                        currentTrain.getId(), currentTrain.numberProperty(), currentTrain.fromProperty(),
+                        currentTrain.toProperty(), currentTrain.trainClassProperty()));
             } catch (SQLException throwable) {
                 throwable.printStackTrace();
             }

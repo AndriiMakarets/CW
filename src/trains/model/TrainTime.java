@@ -9,6 +9,7 @@ import java.util.Date;
 public class TrainTime {
     private String departureTime;
     private String arriveTime;
+    private String duration;
 
     private int id;
     private SimpleIntegerProperty number;
@@ -16,10 +17,11 @@ public class TrainTime {
     private SimpleStringProperty to;
     private SimpleStringProperty trainClass;
 
-    public TrainTime(String departureTime, String arriveTime, int id, SimpleIntegerProperty number, SimpleStringProperty from,
-                     SimpleStringProperty to, SimpleStringProperty trainClass) {
+    public TrainTime(String departureTime, String arriveTime, String duration, int id, SimpleIntegerProperty number,
+                     SimpleStringProperty from, SimpleStringProperty to, SimpleStringProperty trainClass) {
         this.departureTime = departureTime;
         this.arriveTime = arriveTime;
+        this.duration = duration;
         this.id = id;
         this.number = number;
         this.from = from;
@@ -99,5 +101,13 @@ public class TrainTime {
 
     public void setArriveTime(String arriveTime) {
         this.arriveTime = arriveTime;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
     }
 }
