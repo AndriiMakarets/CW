@@ -2,7 +2,6 @@ package trains.controller;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -17,9 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import trains.model.Train;
-import trains.DatabaseHandler;
-
-import javax.swing.*;
+import trains.DAO.DatabaseHandler;
 
 public class MainController  {
 
@@ -36,7 +33,7 @@ public class MainController  {
     private TextField departTimeField;
 
     @FXML
-    private TextField departeField;
+    private TextField departField;
 
     @FXML
     private TextField priceField;
@@ -45,13 +42,13 @@ public class MainController  {
     private Button recommendButton;
 
     @FXML
-    private TextField trainClassField;
+    private TextField trainTypeField;
 
     @FXML
     private TextField travelTimeField;
 
     @FXML
-    private TextField wagonTypeField;
+    private TextField wagonClassField;
 
     Alert alert = new Alert(Alert.AlertType.INFORMATION);
     static ObservableList<Train> trains = FXCollections.observableArrayList();
@@ -59,8 +56,9 @@ public class MainController  {
     static String to;
     static String departTime;
     static String travelTime;
-    static String wagonType;
-    static Integer price = 0;
+    static String wagonClass;
+    static String trainType;
+    static Integer price;
 
     DatabaseHandler db = new DatabaseHandler();
 
@@ -71,13 +69,14 @@ public class MainController  {
         //assert recommendButton != null : "fx:id=\"recommendButtom\" was not injected: check your FXML file 'sample.fxml'.";
 
         recommendButton.setOnAction(event ->{
-            from = departeField.getText().trim();
+            from = departField.getText().trim();
             to = arriveField.getText().trim();
-            departTime = departeField.getText().trim();
-            travelTime = departeField.getText().trim();
-            wagonType = departeField.getText().trim();
+            departTime = departTimeField.getText().trim();
+            travelTime = travelTimeField.getText().trim();
+            wagonClass = wagonClassField.getText().trim();
+            trainType = trainTypeField.getText().trim();
             price = Integer.getInteger(priceField.getText().trim());
-            System.out.println(wagonType);
+           // System.out.println(wagonType);
 
             if(!from.equals("")&& !to.equals("")){
                 try {

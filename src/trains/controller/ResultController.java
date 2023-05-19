@@ -7,11 +7,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import trains.DatabaseHandler;
+import trains.DAO.DatabaseHandler;
 import trains.model.TimeChange;
 import trains.model.Train;
 import trains.model.TrainTime;
-import trains.service.TimeToString;
+import trains.service.Recommender;
+import trains.service.TimeConverter;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -40,6 +41,7 @@ public class ResultController implements Initializable {
     private TableColumn<TrainTime, String> durationColumn;
 
     DatabaseHandler db = new DatabaseHandler();
+    Recommender recommender = new Recommender();
 
 
     @Override
@@ -56,18 +58,17 @@ public class ResultController implements Initializable {
         //додаємо час відправлення до потягів
         ObservableList<Train> trains = MainController.trains;
         ObservableList<TrainTime> trainTimes  = FXCollections.observableArrayList();
-        for (int i=0; i< trains.size(); i++){
-            Train currentTrain = trains.get(i);
+        for (Train currentTrain : trains) {
             System.out.println(currentTrain);
             try {
                 //час+чи була зміна доби
-            TimeChange d = db.getDepartByTrain(currentTrain, MainController.from);
-            TimeChange a = db.getArriveByTrain(currentTrain, MainController.to);
-            //час відправлення/прибуття
-            OffsetDateTime depart = d .getTime();
-            OffsetDateTime arrive = a .getTime();
-            String duration = TimeToString.timeDiff(depart, arrive);
-                trainTimes.add(new TrainTime(TimeToString.toString(depart), TimeToString.toString(arrive), duration,
+                TimeChange d = db.getDepartByTrain(currentTrain, MainController.from);
+                TimeChange a = db.getArriveByTrain(currentTrain, MainController.to);
+                //час відправлення/прибуття
+                OffsetDateTime depart = d.getTime();
+                OffsetDateTime arrive = a.getTime();
+                String duration = TimeConverter.timeDiff(depart, arrive);
+                trainTimes.add(new TrainTime(TimeConverter.toString(depart), TimeConverter.toString(arrive), duration,
                         currentTrain.getId(), currentTrain.numberProperty(), currentTrain.fromProperty(),
                         currentTrain.toProperty(), currentTrain.trainClassProperty()));
             } catch (SQLException throwable) {
@@ -76,7 +77,8 @@ public class ResultController implements Initializable {
 
         }
         //load  data
-        trainTableView.setItems(trainTimes);
+        trainTableView.setItems(recommender.recommend(MainController.trainType, TimeConverter.timeToDouble(MainController.departTime),
+                TimeConverter.timeToDouble(MainController.travelTime),trainTimes));
 
 
        // for (Train train :trains){

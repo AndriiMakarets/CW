@@ -1,8 +1,10 @@
-package trains;
+package trains.DAO;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.jetbrains.annotations.NotNull;
+import trains.Configs;
+import trains.Const;
 import trains.model.TimeChange;
 import trains.model.Train;
 

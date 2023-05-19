@@ -1,10 +1,10 @@
 package trains.service;
 
-import trains.DatabaseHandler;
+import trains.DAO.DatabaseHandler;
 
 import java.time.OffsetDateTime;
 
-public class TimeToString {
+public class TimeConverter {
 
     DatabaseHandler db = new DatabaseHandler();
 
@@ -24,13 +24,20 @@ public class TimeToString {
             if(arrive.getMinute()>=depart.getMinute())
             return numberTimeToString(arrive.getHour() - depart.getHour(), arrive.getMinute()-depart.getMinute());
         return numberTimeToString(arrive.getHour() - depart.getHour()-1, 60+arrive.getMinute()-depart.getMinute());
-        //} else{
-          //  if(arrive.getMinute()>=depart.getMinute())
-          //  return numberTimeToString(24-depart.getHour() + arrive.getHour(), depart.getMinute()-arrive.getMinute());
-       // return  numberTimeToString(24-depart.getHour() + arrive.getHour()-1, 60+depart.getMinute()-arrive.getMinute());
-        //}
     }
 
+    public static Double timeToDouble(OffsetDateTime time){
+        return (double)time.getHour()+(time.getMinute()/60);
+    }
+
+    public static Double timeToDouble(String time){
+        double result=0;
+        result += Integer.parseInt(String.valueOf(time.charAt(0)))*10;
+        result += Integer.parseInt(String.valueOf(time.charAt(1)));
+        result += Double.parseDouble(String.valueOf(time.charAt(3)))/6;
+        result += Double.parseDouble(String.valueOf(time.charAt(4)))/60;
+        return result;
+    }
 
     private static String numberTimeToString(Integer hour, Integer minute){
         String result = "";
