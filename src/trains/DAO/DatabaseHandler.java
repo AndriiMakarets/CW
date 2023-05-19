@@ -11,10 +11,11 @@ import trains.model.Train;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 
 
-public class DatabaseHandler extends Configs implements IDAO{
+public class DatabaseHandler extends Configs implements IDAO {
     Connection dbConnection;
 
     public Connection getDbConnection() throws ClassNotFoundException, SQLException {
@@ -34,10 +35,10 @@ public class DatabaseHandler extends Configs implements IDAO{
                 Const.TIMETABLE_TABLE + " WHERE id_station = (SELECT id_station FROM " +
                 Const.STATION_TABLE + " WHERE st_name =  ? ))AND id_train IN ( " +
                 "SELECT id_train " +
-                "FROM "+ Const.TIMETABLE_TABLE +
+                "FROM " + Const.TIMETABLE_TABLE +
                 " WHERE id_station = (" +
                 "SELECT id_station " +
-                "FROM " +Const.STATION_TABLE  +
+                "FROM " + Const.STATION_TABLE +
                 " WHERE st_name = ?));";
 
         ResultSet result = null;
@@ -50,10 +51,10 @@ public class DatabaseHandler extends Configs implements IDAO{
             result = statement.executeQuery();
 
 
-        while (result.next()){
-            trains.add(new Train(result.getInt(1),result.getInt(2),result.getString(3),
-                    result.getString(4), result.getString(5)));
-        }
+            while (result.next()) {
+                trains.add(new Train(result.getInt(1), result.getInt(2), result.getString(3),
+                        result.getString(4), result.getString(5)));
+            }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -65,8 +66,8 @@ public class DatabaseHandler extends Configs implements IDAO{
     //Для потягу і напрямку витягує час відправлення
     public TimeChange getDepartByTrain(@NotNull Train train, String from) throws SQLException {
         String sql = "SELECT depart, change_of_day " +
-        "FROM timetable JOIN station USING(id_station) " +
-        "WHERE st_name = ? AND id_train = ?";
+                "FROM timetable JOIN station USING(id_station) " +
+                "WHERE st_name = ? AND id_train = ?";
 
         ResultSet resultSet = null;
         TimeChange result = new TimeChange();
@@ -115,5 +116,30 @@ public class DatabaseHandler extends Configs implements IDAO{
         result.setIs_day_changed(resultSet.getBoolean(2));
         return result;
 
+    }
+
+    //витягуємо всі вагони потяга
+    public ArrayList<String> getWagon(Train train) throws SQLException {
+        String sql = "SELECT class_name " +
+                "FROM wagon_class " +
+                "WHERE id_class = (SELECT id_class " +
+                "FROM train_class " +
+                "WHERE id_train = ?)";
+        ResultSet resultSet = null;
+        ArrayList<String> result = new ArrayList<>();
+        try {
+            PreparedStatement statement = getDbConnection().prepareStatement(sql);
+            statement.setInt(1, train.getId());
+            resultSet = statement.executeQuery();
+            // resultSet.next();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        while (true) {
+            assert resultSet != null;
+            if (!resultSet.next()) break;
+            result.add(resultSet.getString(1));
+        }
+        return result;
     }
 }
