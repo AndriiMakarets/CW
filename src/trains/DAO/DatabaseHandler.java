@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
 import java.util.Date;
 
 
-public class DatabaseHandler extends Configs {
+public class DatabaseHandler extends Configs implements IDAO{
     Connection dbConnection;
 
     public Connection getDbConnection() throws ClassNotFoundException, SQLException {

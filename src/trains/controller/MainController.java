@@ -15,6 +15,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import trains.DAO.IDAO;
 import trains.model.Train;
 import trains.DAO.DatabaseHandler;
 
@@ -54,65 +55,78 @@ public class MainController  {
     static ObservableList<Train> trains = FXCollections.observableArrayList();
     static String from;
     static String to;
-    static String departTime;
+    static  String departTime;
     static String travelTime;
     static String wagonClass;
     static String trainType;
-    static Integer price;
+    static  Integer price;
+    static boolean isRecommend= true;
 
-    DatabaseHandler db = new DatabaseHandler();
+
+    IDAO db = new DatabaseHandler();
 
     @FXML
     void initialize() {
-       // assert arriveField != null : "fx:id=\"arriveField\" was not injected: check your FXML file 'sample.fxml'.";
-        //assert departeField != null : "fx:id=\"departeField\" was not injected: check your FXML file 'sample.fxml'.";
-        //assert recommendButton != null : "fx:id=\"recommendButtom\" was not injected: check your FXML file 'sample.fxml'.";
 
         recommendButton.setOnAction(event ->{
+
             from = departField.getText().trim();
             to = arriveField.getText().trim();
             departTime = departTimeField.getText().trim();
+            //System.out.println(departTime);
             travelTime = travelTimeField.getText().trim();
+          //  System.out.println(travelTime);
             wagonClass = wagonClassField.getText().trim();
+            //System.out.println(wagonClass);
             trainType = trainTypeField.getText().trim();
+            //System.out.println(trainType);
             price = Integer.getInteger(priceField.getText().trim());
-           // System.out.println(wagonType);
-
-            if(!from.equals("")&& !to.equals("")){
+          //  System.out.println(price);
+            if(departTime.equals("") && travelTime.equals("") && wagonClass.equals("") && trainType.equals("") &&price==null){
+                isRecommend = false;
+                System.out.println("1");
                 try {
-                   trains = findTrains(from, to);
+                    trains = db.getTrains(from, to);
                 } catch (SQLException | ClassNotFoundException throwables) {
                     throwables.printStackTrace();
                 }
-
-            //закриваємо поточне вікно
-            recommendButton.getScene().getWindow().hide();
-
-
-            //відкриваємо вікно, де буде список потягів
-            FXMLLoader loader= new FXMLLoader();
-            loader.setLocation(getClass().getResource("/trains/result.fxml"));
-
-            try {
-                loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+            else {
+                if (!from.equals("") && !to.equals("")) {
+                    try {
+                        isRecommend = true;
+                        System.out.println("2");
+                        trains = findTrains(from, to);
+                    } catch (SQLException | ClassNotFoundException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+             else{
+                        //спливаюче вікно
+                        alert.setTitle("Заповніть поле");
+                        alert.setHeaderText("");
+                        alert.setContentText("Введіть маршрут прямування!");
+                        alert.show();
+                    }
+                }
 
-            Parent root = loader.getRoot();
-            Stage stage = new Stage();
-            stage.setScene(new Scene(root));
-            stage.showAndWait();
+                    //закриваємо поточне вікно
+                    recommendButton.getScene().getWindow().hide();
 
-            //витягнемо список потягів з бд
-            System.out.println();
+                    //відкриваємо вікно, де буде список потягів
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("/trains/result.fxml"));
 
-            }else
-            //спливаюче вікно
-            alert.setTitle("Заповніть поле");
-            alert.setHeaderText("");
-            alert.setContentText("Введіть маршрут прямування!");
-            alert.show();
+                    try {
+                        loader.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                    Parent root = loader.getRoot();
+                    Stage stage = new Stage();
+                    stage.setScene(new Scene(root));
+                    stage.showAndWait();
 
         });
 

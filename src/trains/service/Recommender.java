@@ -16,9 +16,9 @@ public class Recommender {
         trainType.put("НЕ", 1.0);
         trainType.put("ІС", 2.0);
         trainType.put("РЕ", 3.0);
-        trainType.put("НШ",3.0);
-        trainType.put("Р",4.0);
-        trainType.put("П",4.0);
+        trainType.put("НШ", 3.0);
+        trainType.put("Р", 4.0);
+        trainType.put("П", 5.0);
     }
 
     private final double TIMECOEF = 0.5;
@@ -31,6 +31,8 @@ public class Recommender {
         for(int i = 0; i < request.size(); i++){
             if ((i==0))
             sum+= Math.pow((request.get(i)-propose.get(i)) ,2);
+            if ((i==2))
+                sum+= Math.pow((request.get(i)-propose.get(i))*(TIMECOEF*0.1) ,2);
             else
             sum+= Math.pow((request.get(i)-propose.get(i))*TIMECOEF ,2);
         }
@@ -66,9 +68,4 @@ public class Recommender {
         }
         return result;
     }
-
-
-
-
-    //TO DO
 }
