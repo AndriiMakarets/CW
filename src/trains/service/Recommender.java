@@ -22,7 +22,7 @@ public class Recommender {
     }
 
     private final double TIMECOEF = 0.5;
-    private final int COUNT_RECOMMEND =13;
+    private final int COUNT_RECOMMEND = 5;
 
     //v trainType, departTime, travel time
     private double euclidVectorCount(ArrayList<Double> request, ArrayList<Double>propose){
@@ -39,6 +39,13 @@ public class Recommender {
         return Math.pow(sum, 0.5);
     }
 
+    //public int priceCount(TrainTime train, int distance);
+
+
+
+
+
+    //main recommendation method
     public ObservableList<TrainTime>  recommend (String trainType, Double departTime, Double travelTime, ObservableList<TrainTime> trainTimes){
         ArrayList<Double> userRequest = new ArrayList<>();
         System.out.println(Recommender.trainType.get(trainType));

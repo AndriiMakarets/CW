@@ -41,19 +41,19 @@ public class DatabaseHandler extends Configs implements IDAO {
                 "FROM " + Const.STATION_TABLE +
                 " WHERE st_name = ?));";
 
-        ResultSet result = null;
+        ResultSet resultSet = null;
         ObservableList<Train> trains = FXCollections.observableArrayList();
 
         try {
             PreparedStatement statement = getDbConnection().prepareStatement(sql);
             statement.setString(1, from);
             statement.setString(2, to);
-            result = statement.executeQuery();
+            resultSet = statement.executeQuery();
 
 
-            while (result.next()) {
-                trains.add(new Train(result.getInt(1), result.getInt(2), result.getString(3),
-                        result.getString(4), result.getString(5)));
+            while (resultSet.next()) {
+                trains.add(new Train(resultSet.getInt(1), resultSet.getInt(2), resultSet.getString(3),
+                        resultSet.getString(4), resultSet.getString(5)));
             }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -122,7 +122,7 @@ public class DatabaseHandler extends Configs implements IDAO {
     public ArrayList<String> getWagon(Train train) throws SQLException {
         String sql = "SELECT class_name " +
                 "FROM wagon_class " +
-                "WHERE id_class = (SELECT id_class " +
+                "WHERE id_class IN (SELECT id_class " +
                 "FROM train_class " +
                 "WHERE id_train = ?)";
         ResultSet resultSet = null;
@@ -142,4 +142,27 @@ public class DatabaseHandler extends Configs implements IDAO {
         }
         return result;
     }
+
+    //витягуємо відстань за напрямком
+    public int getDistance(String from, String to) throws SQLException {
+        String sql = "SELECT distance_to " +
+                "FROM distance " +
+                "WHERE name_station_to = ? AND id_station_from  =(SELECT id_station "+
+                        "FROM station "+
+                        "WHERE st_name = ?)";
+        ResultSet resultSet = null;
+        //int result;
+        try {
+            PreparedStatement statement = getDbConnection().prepareStatement(sql);
+            statement.setString(1, to);
+            statement.setString(2, from);
+            resultSet = statement.executeQuery();
+             resultSet.next();
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        assert resultSet != null;
+        return resultSet.getInt(1);
+    }
+
 }

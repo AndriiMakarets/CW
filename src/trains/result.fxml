@@ -17,8 +17,8 @@
             <TableColumn fx:id="departColumn" prefWidth="86.0" text="Відправлення" />
             <TableColumn fx:id="arriveColumn" prefWidth="85.0" text="Прибуття" />
             <TableColumn fx:id="durationColumn" prefWidth="85.0" text="Час в дорозі" />
-         <TableColumn prefWidth="85.0" text="Ціна" />
-         <TableColumn prefWidth="85.0" text="Клас вагону" />
+         <TableColumn fx:id="priceColumn" prefWidth="85.0" text="Ціна" />
+         <TableColumn fx:id="wagonColumn" prefWidth="85.0" text="Клас вагону" />
          <TableColumn prefWidth="115.0" text="Примітки" />
         </columns>
       </TableView>

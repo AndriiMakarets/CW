@@ -55,11 +55,11 @@ public class MainController  {
     static ObservableList<Train> trains = FXCollections.observableArrayList();
     static String from;
     static String to;
-    static  String departTime;
+    static String departTime;
     static String travelTime;
     static String wagonClass;
     static String trainType;
-    static  Integer price;
+    static Integer price;
     static boolean isRecommend= true;
 
 

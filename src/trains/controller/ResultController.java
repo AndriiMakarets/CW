@@ -48,6 +48,11 @@ public class ResultController implements Initializable {
     private TableColumn<TrainTime, String> arriveColumn;
     @FXML
     private TableColumn<TrainTime, String> durationColumn;
+    @FXML
+    private TableColumn<TrainTime, Integer> priceColumn;
+    @FXML
+    private TableColumn<TrainTime, String> wagonColumn;
+
 
     @FXML
     private Button buttonBack;

@@ -10,6 +10,8 @@ public class TrainTime {
     private String departureTime;
     private String arriveTime;
     private String duration;
+    private Integer price;
+    private String wagon;
 
     private int id;
     private SimpleIntegerProperty number;
